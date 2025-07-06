@@ -690,8 +690,6 @@ export default function Spreadsheet() {
             <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="w-4 p-2"></th>
-                {!hiddenFields.includes('jobRole') && (
-<th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer" 
               {!hiddenFields.includes('jobRole') && (
                 <th
                   className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
