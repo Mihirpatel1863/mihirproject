@@ -26,7 +26,6 @@ import {
   Clock,
   TrendingUp
 } from "lucide-react";
-import FormulaBar from "@/components/spreadsheet/FormulaBar";
 
 interface ProjectData {
   id: number;
@@ -127,6 +126,8 @@ export default function Spreadsheet() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState("All Orders");
   const [selectedRow, setSelectedRow] = useState<number>(0);
+  const [selectedCell, setSelectedCell] = useState<string | null>(null);
+  const [cellData, setCellData] = useState<{ [key: string]: string }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(projectData);
   const [sortConfig, setSortConfig] = useState<{key: keyof ProjectData; direction: 'asc' | 'desc'} | null>(null);
@@ -673,18 +674,25 @@ export default function Spreadsheet() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
+      <FormulaBar
+  selectedCell={selectedCell}
+  cellValue={selectedCell ? cellData[selectedCell] || "" : ""}
+  onApply={(value) => {
+    if (selectedCell) {
+      setCellData((prev) => ({ ...prev, [selectedCell]: value }));
+    }
+  }}
+/>
+<div className="flex-1 overflow-hidden">
         <div className="h-full overflow-auto">
-          <table className="w-full">
-            {viewMode === 'table' && isToolbarOpen && (
-  <thead className="bg-gray-50 sticky top-0">
+          {viewMode === 'table' && (
+<table className="w-full">
+            <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="w-4 p-2"></th>
                 {!hiddenFields.includes('jobRole') && (
-  <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
-      onClick={() => handleSort('jobRole')}>
-    Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-  </th>
+<th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer" 
+                    onClick={() => handleSort('jobRole')}>
 )}
                   Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
@@ -721,8 +729,7 @@ export default function Spreadsheet() {
             </thead>
             <tbody>
               {filteredData.map((project, index) => (
-                {viewMode === 'table' && isToolbarOpen && filteredData.map((project, index) => (
-<tr key={project.id} 
+                <tr key={project.id} 
                     className={`border-b hover:bg-gray-50 group cursor-pointer ${
                       selectedRow === index ? 'bg-blue-50 ring-2 ring-blue-300' : ''
                     }`}
@@ -736,24 +743,14 @@ export default function Spreadsheet() {
                     </div>
                   </td>
                   {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
-                    <div className="text-sm text-gray-900">{project.jobRole}</div>
+<td className="p-3 border-r" onClick={() => setSelectedCell(`jobRole${index}`)}>
+                    <div className="text-sm text-gray-900">{cellData[`jobRole${index}`] || project.jobRole}</div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
 )}
+                  <td className="p-3 border-r">
                     <div className="text-sm text-gray-700">{project.submitDate}</div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <Badge className={`text-xs font-medium cursor-pointer ${getStatusColor(project.status)}`}
                            onClick={(e) => {
                              e.stopPropagation();
@@ -767,18 +764,10 @@ export default function Spreadsheet() {
                       {project.status}
                     </Badge>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <div className="text-sm text-gray-700">{project.submitter}</div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <div className="text-sm text-blue-600 hover:underline cursor-pointer"
                          onClick={(e) => {
                            e.stopPropagation();
@@ -788,18 +777,10 @@ export default function Spreadsheet() {
                       {project.url}
                     </div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <div className="text-sm text-gray-700">{project.assignee}</div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <Badge className={`text-xs font-medium cursor-pointer ${getPriorityColor(project.priority)}`}
                            onClick={(e) => {
                              e.stopPropagation();
@@ -813,11 +794,7 @@ export default function Spreadsheet() {
                       {project.priority}
                     </Badge>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-  <td className="p-3 border-r">
-    <div className="text-sm text-gray-900">{project.jobRole}</div>
-  </td>
-)}
+                  <td className="p-3 border-r">
                     <div className="text-sm text-gray-700">{project.dueDate}</div>
                   </td>
                   <td className="p-3">
@@ -842,8 +819,8 @@ export default function Spreadsheet() {
                 </tr>
               ))}
             </tbody>
-  )}
           </table>
+)}
         </div>
       </div>
 
