@@ -692,9 +692,14 @@ export default function Spreadsheet() {
                 <th className="w-4 p-2"></th>
                 {!hiddenFields.includes('jobRole') && (
 <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer" 
-                    onClick={() => handleSort('jobRole')}>
-)}
+              {!hiddenFields.includes('jobRole') && (
+                <th
+                  className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleSort('jobRole')}
+                >
                   Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
+              )}
                 </th>
                 <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
                     onClick={() => handleSort('submitDate')}>
