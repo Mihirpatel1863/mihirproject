@@ -26,6 +26,7 @@ import {
   Clock,
   TrendingUp
 } from "lucide-react";
+import FormulaBar from "@/components/spreadsheet/FormulaBar";
 
 interface ProjectData {
   id: number;
