@@ -481,6 +481,7 @@ export default function Spreadsheet() {
       </div>
 
       {isToolbarOpen && (
+          <>
       {/* Enhanced Premium Toolbar */}
       <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200/60 px-6 py-3 animate-slideDown">
         <div className="flex items-center justify-between">
@@ -658,6 +659,7 @@ export default function Spreadsheet() {
         )}
       </div>
 
+          </>
       )} {/* End toolbar */
       {/* Action Tabs */}
       <div className="bg-white px-6 py-2 flex items-center space-x-6 border-b">
@@ -891,3 +893,4 @@ export default function Spreadsheet() {
     </div>
   );
 }
+
