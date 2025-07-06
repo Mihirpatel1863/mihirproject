@@ -676,11 +676,16 @@ export default function Spreadsheet() {
       <div className="flex-1 overflow-hidden">
         <div className="h-full overflow-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 sticky top-0">
+            {viewMode === 'table' && isToolbarOpen && (
+  <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="w-4 p-2"></th>
-                <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer" 
-                    onClick={() => handleSort('jobRole')}>
+                {!hiddenFields.includes('jobRole') && (
+  <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
+      onClick={() => handleSort('jobRole')}>
+    Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+  </th>
+)}
                   Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
                 <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
@@ -716,7 +721,8 @@ export default function Spreadsheet() {
             </thead>
             <tbody>
               {filteredData.map((project, index) => (
-                <tr key={project.id} 
+                {viewMode === 'table' && isToolbarOpen && filteredData.map((project, index) => (
+<tr key={project.id} 
                     className={`border-b hover:bg-gray-50 group cursor-pointer ${
                       selectedRow === index ? 'bg-blue-50 ring-2 ring-blue-300' : ''
                     }`}
@@ -729,13 +735,25 @@ export default function Spreadsheet() {
                       <span className="text-xs text-gray-500">{project.id}</span>
                     </div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-gray-900">{project.jobRole}</div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-gray-700">{project.submitDate}</div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <Badge className={`text-xs font-medium cursor-pointer ${getStatusColor(project.status)}`}
                            onClick={(e) => {
                              e.stopPropagation();
@@ -749,10 +767,18 @@ export default function Spreadsheet() {
                       {project.status}
                     </Badge>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-gray-700">{project.submitter}</div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-blue-600 hover:underline cursor-pointer"
                          onClick={(e) => {
                            e.stopPropagation();
@@ -762,10 +788,18 @@ export default function Spreadsheet() {
                       {project.url}
                     </div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-gray-700">{project.assignee}</div>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <Badge className={`text-xs font-medium cursor-pointer ${getPriorityColor(project.priority)}`}
                            onClick={(e) => {
                              e.stopPropagation();
@@ -779,7 +813,11 @@ export default function Spreadsheet() {
                       {project.priority}
                     </Badge>
                   </td>
-                  <td className="p-3 border-r">
+                  {!hiddenFields.includes('jobRole') && (
+  <td className="p-3 border-r">
+    <div className="text-sm text-gray-900">{project.jobRole}</div>
+  </td>
+)}
                     <div className="text-sm text-gray-700">{project.dueDate}</div>
                   </td>
                   <td className="p-3">
@@ -804,6 +842,7 @@ export default function Spreadsheet() {
                 </tr>
               ))}
             </tbody>
+  )}
           </table>
         </div>
       </div>
