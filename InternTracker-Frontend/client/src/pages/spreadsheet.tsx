@@ -126,8 +126,6 @@ export default function Spreadsheet() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState("All Orders");
   const [selectedRow, setSelectedRow] = useState<number>(0);
-  const [selectedCell, setSelectedCell] = useState<string | null>(null);
-  const [cellData, setCellData] = useState<{ [key: string]: string }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(projectData);
   const [sortConfig, setSortConfig] = useState<{key: keyof ProjectData; direction: 'asc' | 'desc'} | null>(null);
@@ -674,31 +672,15 @@ export default function Spreadsheet() {
       </div>
 
       {/* Main Content */}
-      <FormulaBar
-  selectedCell={selectedCell}
-  cellValue={selectedCell ? cellData[selectedCell] || "" : ""}
-  onApply={(value) => {
-    if (selectedCell) {
-      setCellData((prev) => ({ ...prev, [selectedCell]: value }));
-    }
-  }}
-/>
-<div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         <div className="h-full overflow-auto">
-          {viewMode === 'table' && (
-<table className="w-full">
+          <table className="w-full">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="w-4 p-2"></th>
-              {!hiddenFields.includes('jobRole') && (
-  <th
-    className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
-    onClick={() => handleSort('jobRole')}
-  >
-    Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-  </th>
-)}
-
+                <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer" 
+                    onClick={() => handleSort('jobRole')}>
+                  Job Role {sortConfig?.key === 'jobRole' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
                 <th className="text-left p-3 text-sm font-medium text-gray-700 border-r hover:bg-gray-100 cursor-pointer"
                     onClick={() => handleSort('submitDate')}>
@@ -746,11 +728,9 @@ export default function Spreadsheet() {
                       <span className="text-xs text-gray-500">{project.id}</span>
                     </div>
                   </td>
-                  {!hiddenFields.includes('jobRole') && (
-<td className="p-3 border-r" onClick={() => setSelectedCell(`jobRole${index}`)}>
-                    <div className="text-sm text-gray-900">{cellData[`jobRole${index}`] || project.jobRole}</div>
+                  <td className="p-3 border-r">
+                    <div className="text-sm text-gray-900">{project.jobRole}</div>
                   </td>
-)}
                   <td className="p-3 border-r">
                     <div className="text-sm text-gray-700">{project.submitDate}</div>
                   </td>
@@ -824,7 +804,6 @@ export default function Spreadsheet() {
               ))}
             </tbody>
           </table>
-)}
         </div>
       </div>
 
